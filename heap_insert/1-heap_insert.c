@@ -1,63 +1,97 @@
-#include "binary_trees.h"
 #include <stdlib.h>
+#include "binary_trees.h"
+
+int node_count(const heap_t *tree);
+heap_t *ins_max_heap(heap_t *node, heap_t *new_node, int index,
+						 int new_node_index);
+heap_t *bottom_up_heapify(heap_t *node);
 
 /**
- * heap_insert - Inserts a value into a Max Binary Heap
- * @root: Double pointer to the root node of the Heap
- * @value: Value to store in the node to be inserted
- *
- * Return: Pointer to the inserted node, or NULL on failure
+ * heap_insert - Insère une valeur dans un tas binaire maximum
+ * @root: Double pointeur vers le nœud racine du tas où insérer la valeur
+ * @value: Valeur à stocker dans le nœud à insérer
+ * Return: Pointeur vers le nœud créé, ou NULL en cas d'échec
  */
 heap_t *heap_insert(heap_t **root, int value)
 {
-    heap_t *new_node, *current;
+	int size;
+	heap_t *new_node = NULL;
 
-    if (!root)
-        return (NULL);
+	if (!root)
+		return (NULL);
 
-    /* Create a new node */
-    new_node = binary_tree_node(NULL, value);
-    if (!new_node)
-        return (NULL);
+	new_node = binary_tree_node(NULL, value);
+	if (!new_node)
+		return (NULL);
 
-    if (!*root) /* If tree is empty, new node becomes root */
-    {
-        *root = new_node;
-        return (new_node);
-    }
+	size = node_count(*root) + 1;
+	*root = ins_max_heap(*root, new_node, 0, size - 1);
 
-    /* Insert node in level-order */
-    current = *root;
-    while (current)
-    {
-        if (!current->left) /* Insert at left if available */
-        {
-            current->left = new_node;
-            new_node->parent = current;
-            break;
-        }
-        else if (!current->right) /* Insert at right if available */
-        {
-            current->right = new_node;
-            new_node->parent = current;
-            break;
-        }
+	return (bottom_up_heapify(new_node));
+}
 
-        /* Traverse left or right (implement level-order logic) */
-        if (current->left)
-            current = current->left;
-        else
-            current = current->right;
-    }
+/**
+ * node_count - Compte le nombre total de nœuds dans un arbre binaire
+ * @tree: Pointeur vers le nœud racine de l'arbre à compter
+ * Return: Le nombre de nœuds dans l'arbre
+ */
+int node_count(const heap_t *tree)
+{
+	if (!tree)
+		return (0);
+	return (1 + node_count(tree->left) + node_count(tree->right));
+}
 
-    /* Fix heap property */
-    while (new_node->parent && new_node->n > new_node->parent->n)
-    {
-        int temp = new_node->n;
-        new_node->n = new_node->parent->n;
-        new_node->parent->n = temp;
-        new_node = new_node->parent;
-    }
+/**
+ * ins_max_heap - Insère une valeur dans un tas binaire maximum
+ * @node: Pointeur vers le nœud racine du tas où insérer la valeur
+ * @new_node: Valeur à stocker dans le nœud à insérer
+ * @index: Indice du nœud actuel
+ * @new_node_index: Indice du nouveau nœud
+ * Return: Pointeur vers le nœud créé, ou NULL en cas d'échec
+ */
+heap_t *ins_max_heap(heap_t *node, heap_t *new_node,
+						 int index, int new_node_index)
 
-    return (new_node);
+{
+	if (index > new_node_index)
+		return (NULL);
+	if (index == new_node_index)
+		return (new_node);
+
+	node->left = ins_max_heap(node->left, new_node,
+							  index * 2 + 1, new_node_index);
+	if (node->left)
+		node->left->parent = node;
+
+	node->right = ins_max_heap(node->right, new_node,
+							   index * 2 + 2, new_node_index);
+	if (node->right)
+		node->right->parent = node;
+
+	return (node);
+}
+
+/**
+ * bottom_up_heapify - Réorganise un tas binaire maximum de bas en haut
+ * Description : Cette fonction échange la valeur d'un nœud avec la valeur de
+ * son parent tant que la valeur du nœud est supérieure à celle de son
+ * parent.
+ *
+ * @node: Pointeur vers le nœud racine du tas à réorganiser
+ * Return: Pointeur vers le nœud racine du tas
+ */
+heap_t *bottom_up_heapify(heap_t *node)
+{
+	heap_t *temp = node;
+	int temp_n;
+
+	while (temp->parent && temp->n > temp->parent->n)
+	{
+		temp_n = temp->n;
+		temp->n = temp->parent->n;
+		temp->parent->n = temp_n;
+		temp = temp->parent;
+	}
+	return (temp);
 }
