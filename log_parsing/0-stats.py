@@ -5,7 +5,7 @@ Log Parsing Script
 This script reads stdin line by line and computes statistics:
 - Calculates the total file size from logs.
 - Counts occurrences of specific HTTP status codes.
-- Prints statistics every 10 lines or on keyboard interruption (CTRL + C).
+- Prints statistics every 10 lines 
 """
 import sys
 import signal
@@ -25,7 +25,9 @@ def print_stats():
 
 
 def signal_handler(sig, frame):
-    """Handles keyboard interruption (CTRL + C) to print stats before exiting."""
+    """
+    Handles keyboard interruption (CTRL + C)
+    """
     print_stats()
     sys.exit(0)
 
