@@ -1,11 +1,6 @@
 #!/usr/bin/python3
 """
 Log Parsing Script
-
-This script reads stdin line by line and computes statistics:
-- Calculates the total file size from logs.
-- Counts occurrences of specific HTTP status codes.
-- Prints statistics every 10 lines 
 """
 import sys
 import signal
