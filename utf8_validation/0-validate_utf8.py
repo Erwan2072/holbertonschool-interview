@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """
-Module that provides a method to determine if a given data set represents a valid UTF-8 encoding.
+Module that provides a method to determine
+if a given data set represents a valid UTF-8 encoding.
 """
 from typing import List
+
 
 def validUTF8(data: List[int]) -> bool:
     num_bytes = 0
