@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import sys 
+import sys
 
 
 def is_safe(queens, row, col):
@@ -32,7 +32,7 @@ def solve_nqueens(n, row=0, queens=[], solutions=[]):
     for col in range(n):
         if is_safe(queens, row, col):
             queens.append(col)             # On place une reine
-            solve_nqueens(n, row + 1, queens, solutions)  # On passe à la ligne suivante
+            solve_nqueens(n, row + 1, queens, solutions)
             queens.pop()                   # Backtrack : on retire la reine
 
 
