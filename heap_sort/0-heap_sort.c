@@ -7,9 +7,9 @@
  */
 void swap(int *a, int *b)
 {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+	int temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
 /**
@@ -21,27 +21,27 @@ void swap(int *a, int *b)
  */
 void sift_down(int *array, size_t size, size_t base, size_t root)
 {
-    size_t largest, left, right;
+	size_t largest, left, right;
 
-    largest = root;
-    left = 2 * root + 1;
-    right = 2 * root + 2;
+	largest = root;
+	left = 2 * root + 1;
+	right = 2 * root + 2;
 
-    /* Compare root with left child */
-    if (left < base && array[left] > array[largest])
-        largest = left;
+	/* Compare root with left child */
+	if (left < base && array[left] > array[largest])
+		largest = left;
 
-    /* Compare largest with right child */
-    if (right < base && array[right] > array[largest])
-        largest = right;
+	/* Compare largest with right child */
+	if (right < base && array[right] > array[largest])
+		largest = right;
 
-    /* If root is not the largest, swap and continue sifting down */
-    if (largest != root)
-    {
-        swap(&array[root], &array[largest]);
-        print_array(array, size);
-        sift_down(array, size, base, largest);
-    }
+	/* If root is not the largest, swap and continue sifting down */
+	if (largest != root)
+	{
+		swap(&array[root], &array[largest]);
+		print_array(array, size);
+		sift_down(array, size, base, largest);
+	}
 }
 
 /**
@@ -54,20 +54,20 @@ void sift_down(int *array, size_t size, size_t base, size_t root)
  */
 void heap_sort(int *array, size_t size)
 {
-    size_t i;
+	size_t i;
 
-    if (array == NULL || size < 2)
-        return;
+	if (array == NULL || size < 2)
+		return;
 
-    /* Build max heap */
-    for (i = size / 2; i > 0; i--)
-        sift_down(array, size, size, i - 1);
+	/* Build max heap */
+	for (i = size / 2; i > 0; i--)
+		sift_down(array, size, size, i - 1);
 
-    /* Extract root and rebuild heap */
-    for (i = size - 1; i > 0; i--)
-    {
-        swap(&array[0], &array[i]);
-        print_array(array, size);
-        sift_down(array, size, i, 0);
-    }
+	/* Extract root and rebuild heap */
+	for (i = size - 1; i > 0; i--)
+	{
+		swap(&array[0], &array[i]);
+		print_array(array, size);
+		sift_down(array, size, i, 0);
+	}
 }
