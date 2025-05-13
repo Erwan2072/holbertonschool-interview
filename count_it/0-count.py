@@ -6,7 +6,8 @@ import sys
 
 def count_words(subreddit, word_list, after=None, word_counts=None):
     """
-    Fonction récursive qui compte les occurrences de mots-clés dans les titres des posts "hot" d'un subreddit.
+    Fonction récursive qui compte les occurrences de mots-clés dans
+    les titres des posts "hot" d'un subreddit.
     """
     if word_counts is None:
         # Initialize word counts with lowercase keywords
@@ -23,7 +24,8 @@ def count_words(subreddit, word_list, after=None, word_counts=None):
         params['after'] = after
 
     # Make the API request
-    response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+    response = requests.get(url, headers=headers, params=params,
+                            allow_redirects=False)
 
     # Check for invalid subreddit
     if response.status_code != 200:
@@ -49,6 +51,7 @@ def count_words(subreddit, word_list, after=None, word_counts=None):
         # Filter out words with zero count
         filtered_counts = {k: v for k, v in word_counts.items() if v > 0}
         # Sort by count descending, then alphabetically
-        sorted_words = sorted(filtered_counts.items(), key=lambda item: (-item[1], item[0]))
+        sorted_words = sorted(filtered_counts.items(), key=lambda item:
+                              (-item[1], item[0]))
         for word, count in sorted_words:
             print(f"{word}: {count}")
