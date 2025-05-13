@@ -1,9 +1,13 @@
 #!/usr/bin/python3
+import re
 import requests
 import sys
-import re
+
 
 def count_words(subreddit, word_list, after=None, word_counts=None):
+    """
+    Fonction récursive qui compte les occurrences de mots-clés dans les titres des posts "hot" d'un subreddit.
+    """
     if word_counts is None:
         # Initialize word counts with lowercase keywords
         word_counts = {}
