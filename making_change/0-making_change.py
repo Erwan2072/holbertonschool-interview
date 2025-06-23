@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""This module provides a function to determine the fewest number of coins needed to reach a total amount."""
+"""
+This module provides a function to determine the fewest
+number of coins needed to reach a total amount.
+"""
 
 
 def makeChange(coins, total):
