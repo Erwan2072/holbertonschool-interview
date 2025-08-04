@@ -3,7 +3,6 @@
 0-pascal_triangle
 """
 
-__import__('0-pascal_triangle').pascal_triangle
 
 def pascal_triangle(n):
     """
