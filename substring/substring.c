@@ -65,6 +65,31 @@ static int same_len_words(const char **words, int nb_words, int len)
 }
 
 /**
+ * collect_indices - scan string for valid substrings
+ * @s: string to scan
+ * @words: array of words
+ * @nb_words: number of words
+ * @word_len: length of each word
+ * @len_s: length of string
+ * @sub_len: total length of concatenated substring
+ * @indices: array to store results
+ *
+ * Return: number of matches found
+ */
+static int collect_indices(const char *s, const char **words, int nb_words,
+			   int word_len, int len_s, int sub_len, int *indices)
+{
+	int i, count = 0;
+
+	for (i = 0; i <= len_s - sub_len; i++)
+	{
+		if (check_substring(s, words, nb_words, word_len, i))
+			indices[count++] = i;
+	}
+	return (count);
+}
+
+/**
  * find_substring - find all starting indices of substrings
  * containing all words exactly once
  * @s: string to scan
@@ -76,26 +101,19 @@ static int same_len_words(const char **words, int nb_words, int len)
  */
 int *find_substring(const char *s, const char **words, int nb_words, int *n)
 {
-	int i, len_s, word_len, sub_len, *indices, count = 0;
-	int max_candidates;
+	int len_s, word_len, sub_len, *indices, count, max_candidates;
 
 	if (n)
 		*n = 0;
-
 	if (!s || !words || nb_words <= 0 || !n)
 		return (NULL);
 
 	word_len = (int)strlen(words[0]);
-	if (word_len == 0)
-		return (NULL);
-
-	/* Optionnel mais sûr : vérifier la même longueur pour tous */
-	if (!same_len_words(words, nb_words, word_len))
+	if (word_len == 0 || !same_len_words(words, nb_words, word_len))
 		return (NULL);
 
 	len_s = (int)strlen(s);
 	sub_len = word_len * nb_words;
-
 	if (len_s < sub_len)
 		return (NULL);
 
@@ -104,11 +122,8 @@ int *find_substring(const char *s, const char **words, int nb_words, int *n)
 	if (!indices)
 		return (NULL);
 
-	for (i = 0; i <= len_s - sub_len; i++)
-	{
-		if (check_substring(s, words, nb_words, word_len, i))
-			indices[count++] = i;
-	}
+	count = collect_indices(s, words, nb_words,
+		word_len, len_s, sub_len, indices);
 
 	if (count == 0)
 	{
